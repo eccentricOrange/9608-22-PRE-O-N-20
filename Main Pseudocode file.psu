@@ -1,0 +1,30 @@
+// TASK 1
+
+// TASK 1.1
+// Design an algorithm to search for a specific value in ItemDescription and, if found, to output the array index where the value is found. Output a suitable message if the value is not found.
+
+DECLARE Index, Counter, n : INTEGER
+DECLARE DesiredValue : STRING
+
+OUTPUT "Enter the value you want to search for: "
+INPUT DesiredValue
+
+Index ← -1
+Counter ← 0
+
+WHILE (Counter < n) AND (Index <> -1) DO
+    
+    IF ItemDescription[Counter] = DesiredValue
+      THEN
+        Index ← Counter
+    ENDIF
+
+ENDWHILE
+
+IF Index = -1:
+  THEN
+    OUTPUT "The element entered was not found."
+  
+  ELSE
+    OUTPUT "The element entered was found at", Index
+ENDIF
