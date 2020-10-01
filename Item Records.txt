@@ -1,0 +1,6 @@
+:AA0001:Pencil:1.0:100
+:AB0056:Pen:10.0:100
+:HG5557:Notebook:100.0:50
+:DC2568:Ruler:20.0:20
+:LK4458:Compass:30.0:20
+:YU5569:Highlighter:20.0:50

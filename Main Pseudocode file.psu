@@ -13,6 +13,7 @@ Index ← -1
 Counter ← 0
 
 WHILE (Counter < n) AND (Index <> -1) DO
+    Counter ← Counter + 1
     
     IF ItemDescription[Counter] = DesiredValue
       THEN
@@ -76,11 +77,44 @@ FOR Counter ← 1 TO n
     IF NumberInStock[Counter] < ThresholdLevel
       
       THEN
-        OUTPUT "Item Code:", ItemCode[Counter]
-        OUTPUT "Item Description:", ItemDescription[Counter]
-        OUTPUT "Price:", Price[Counter]
-        OUTPUT "Number in stock:", NumberInStock[Counter]
+        OUTPUT "Item Code:" & ItemCode[Counter]
+        OUTPUT "Item Description:" & ItemDescription[Counter]
+        OUTPUT "Price:" & NUM_TO_STRING(Price[Counter])
+        OUTPUT "Number in stock:" & NUM_TO_STRING(NumberInStock[Counter])
     
     ENDIF
 
 ENDFOR
+
+
+// TASK 2.2
+// Design an algorithm to input the four pieces of data about a stock item, form a string according to your format design, and write the string to the text file.
+// First draw a program flowchart, then write the equivalent pseudocode.
+
+CONSTANT RecordsFile : "Item Records.txt"
+DECLARE NewItemCode, NewItemDescription, WriteString : STRING
+DECLARE NewCounter, NewNumberInStock : INTEGER
+DECLARE NewPrice : REAL
+
+WriteString ← ""
+
+OUTPUT "Enter item code: "
+INPUT NewItemCode
+WriteString ← ':' & NewItemCode
+
+OUTPUT "Enter item description: "
+INPUT NewItemDescription
+WriteString ← WriteString & ':' & NewItemDescription
+
+OUTPUT "Enter the price: "
+INPUT NewPrice
+WriteString ← WriteString & ':' & NUM_TO_STRING(NewPrice)
+
+OUTPUT "Enter number of items in stock: "
+INPUT NewNumberInStock
+WriteString ← WriteString & ':' & NUM_TO_STRING(NumberInStock) & '\n'
+
+
+OPENFILE RecordsFile FOR APPEND
+WRITEFILE(RecordsFile, WriteString)
+CLOSEFILE(RecordsFile)
