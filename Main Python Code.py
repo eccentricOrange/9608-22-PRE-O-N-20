@@ -1,22 +1,46 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
-# %% [markdown]
-# # 9608/22/PRE/O/N/2020
-# The cell below declares the variables and arrays that are supposed to be pre-populated.
-
-# %%
+## Arrays which are supposed to be pre-populated
 ItemCode = ["1001", "6056", "5557", "2568", "4458"]
 ItemDescription = ["Pencil", "Pen", "Notebook", "Ruler", "Compass"]
 Price = [1.0, 10.0, 100.0, 20.0, 30.0]
 NumberInStock = [100, 100, 50, 20, 20]
 
+## Constant for the initial number of element (pre-defined)
 n = len(ItemCode)
 
-# %% [markdown]
-# ## TASK 1.4
-# Write program code to produce a report displaying all the information stored about each item for which the number in stock is below a given level. The planning and identifier table are in the pasudocode file and the markdown respectively.
+## Constant for the name of the file
+RecordsFile = "Item Records.txt"
 
-# %%
+## Open file for "APPEND" and assign the I/O reference to a variable
+FileObject = open(RecordsFile, "a")
+
+## Subroutine to input a valid item code
+def GetItemCode():
+    Valid = False
+
+    TestItemCode = int(input("\nEnter the code of the item: "))
+
+    while not (TestItemCode > 1000 and TestItemCode < 9999):
+        TestItemCode = int(input("Re-enter the codeof the item: "))
+    
+    return TestItemCode
+
+## Subroutine to extract details of a given record string into an array
+def ExtractDetails(RecordString, Details):
+    Position = 0
+    SearchString = RecordString + ':'
+
+    if RecordString != "":
+        for Counter in range(4):
+            Position += 1
+            CurrentCharacter = SearchString[Position : Position + 1]
+
+            while CurrentCharacter != ':':
+                Details[Counter] += CurrentCharacter
+                Position += 1
+                CurrentCharacter = SearchString[Position : Position + 1]
+
+
+## TASK 1.4
 ThresholdLevel = int(input("Enter the minumum stock level: "))
 
 for Counter in range(n):
@@ -27,13 +51,8 @@ for Counter in range(n):
         print("Price:", Price[Counter])
         print("Number in stock:", NumberInStock[Counter])
 
-# %% [markdown]
-# ## TASK 2.2
-# Design an algorithm to input the four pieces of data about a stock item, form a string according to your format design, and write the string to the text file. <br> First draw a program flowchart, then write the equivalent pseudocode.
 
-# %%
-RecordsFile = "Item Records.txt"
-FileObject = open(RecordsFile, "a+")
+## TASK 2.2
 WriteString = ""
 
 NewItemCode = int(input("\nEnter item code: "))
@@ -49,47 +68,13 @@ NewNumberInStock = int(input("Enter the number of items in stock: "))
 WriteString += ':' + str(NewNumberInStock) + '\n'
 
 FileObject.write(WriteString)
-FileObject.close()
-
-# %% [markdown]
-# ## TASK 2.4
-# The cell below defines the sub-routines which will be used by more than of the tasks.
-
-# %%
-def GetItemCode():
-    Valid = False
-
-    TestItemCode = int(input("Enter the code of the item: "))
-
-    while not (TestItemCode > 1000 and TestItemCode < 9999):
-        TestItemCode = int(input("Re-enter the codeof the item: "))
-    
-    return TestItemCode
 
 
-def ExtractDetails(RecordString, Details):
-    Position = 0
-    SearchString = RecordString + ':'
-
-    if RecordString != "":
-        for Counter in range(4):
-            Position += 1
-            CurrentCharacter = SearchString[Position : Position + 1]
-
-            while CurrentCharacter != ':':
-                Details[Counter] += CurrentCharacter
-                Position += 1
-                CurrentCharacter = SearchString[Position : Position + 1]
-
-# %% [markdown]
-# ## TASK 2.4 (1)
-# Add a new stock item to the text file. Include validation of the different pieces of information as appropriate. For example item code data may be a fixed format.
-
-# %%
+## TAKS 2.4 (1)
 WriteString = ""
 WriteString = ':' + str(GetItemCode())
 
-NewItemDescription = str(input("\nEnter item description: "))
+NewItemDescription = str(input("Enter item description: "))
 WriteString += ':' + NewItemDescription
 
 NewPrice = float(input("Enter the price of the item: "))
@@ -98,24 +83,30 @@ WriteString += ':' + str(NewPrice)
 NewNumberInStock = int(input("Enter number of items in stock: "))
 WriteString += ':' + str(NewNumberInStock) + '\n'
 
-FileObject = open(RecordsFile, "a+")
 FileObject.write(WriteString)
+
+
+## Close the file and save changes
 FileObject.close()
 
-# %% [markdown]
-# ## TASK 2.4 (2)
-# Search for a stock item with a specific item code. Output the other pieces of data together with suitable supporting text.
+## Open the file in "READ" mode
+FileObject = open(RecordsFile, "r")
 
-# %%
+## Read data from the file into an array. They are also split using the newline delimiter '\n'.
+FileData = (FileObject.read()).split('\n')
+
+## Remove last empty element
+FileData.pop()
+
+## Close the file
+FileObject.close()
+
+## TASK 2.4 (2)
 Found = False
 CurrentRecord = ""
 
 print("\nEnter the code of the item you want to search for")
 DesiredItemCode = GetItemCode()
-
-FileObject = open(RecordsFile, "r+")
-FileData = (FileObject.read()).split('\n')
-FileObject.close()
 
 for record in FileData:
     CurrentRecord = record
@@ -135,16 +126,9 @@ if Found:
 else:
     print("Item not found.")
 
-# %% [markdown]
-# ## TASK 2.4 (3)
-# Search for all stock items with a specific item description, with output as for task 2.
 
-# %%
+## TASK 2.4 (3)
 DesiredItemDescription = str(input("\nEnter the description of the item you want to search for: "))
-
-FileObject = open(RecordsFile, "r+")
-FileData = (FileObject.read()).split('\n')
-FileObject.close()
 
 for record in FileData:
     DetailsOfRecord = ["" for i in range(4)]
@@ -156,16 +140,9 @@ for record in FileData:
         print("Price of item: " + str(DetailsOfRecord[2]))
         print("Number of the item in stock: " + str(DetailsOfRecord[3]))
 
-# %% [markdown]
-# ## TASK 2.4 (4)
-# Output a list of all stock items with a price greater than a given amount.
 
-# %%
+## TASK 2.4 (4)
 DesiredPrice = float(input("\nEnter the maximum threshold price: "))
-
-FileObject = open(RecordsFile, "r+")
-FileData = (FileObject.read()).split('\n')
-FileObject.close()
 
 for record in FileData:
     DetailsOfRecord = ["" for i in range(4)]
@@ -176,5 +153,4 @@ for record in FileData:
         print("Item Description: " + DetailsOfRecord[1])
         print("Price of item: " + str(DetailsOfRecord[2]))
         print("Number of the item in stock: " + str(DetailsOfRecord[3]))
-
 

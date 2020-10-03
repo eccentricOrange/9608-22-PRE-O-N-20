@@ -1,3 +1,5 @@
+# 9608/22/PRE/O/N/20
+
 ## Files
 These are the files that constute the solution to the pre-release material for Computer Science component 9608/22 of the October/November 2020 examination series.
 | Filename | Type | Purpose |
@@ -5,15 +7,15 @@ These are the files that constute the solution to the pre-release material for C
 | 9608_w20_PM_22 | `.pdf` | The pre-release material file released by CAIE. |
 | Planning | `.md` | This is the markdown text file this PDF was created from. |
 | Planning | `.pdf` | You are currently reading this file. It describes the solution used in answering the pre-release material and houses all material apart from code (such as identifier tables and structured English). |
-| Main Python Notebook | `.ipynb` | The [Jupyter Notebook](https://jupyter.org/) in which the Python code was originally written. |
-| Main Python Notebook | `.pdf` | The PDF version of the Jupyter Notebook (for the viewer whose system doesn't have Jupyter). |
+| Main Python notebook | `.ipynb` | The [Jupyter Notebook](https://jupyter.org/) in which the Python code was originally written. |
+| Main Python notebook | `.pdf` | The PDF version of the Jupyter Notebook (for the viewer whose system doesn't have Jupyter). |
 | Main Python Code | `.py` | The Python 3.8 file that contains all executable code (for the viewer whose system doesn't have Jupyter). |
-| Main Pseudocode File | `.psu` | The file containing all the pseudocode, written using an open-source [custom-built extension](https://github.com/eccentricOrange/NPP-CAIE-Pseudocode-Highlighting-plugin).
+| Main Pseudocode file | `.psu` | The file containing all the pseudocode, written using an open-source [custom-built extension](https://github.com/eccentricOrange/NPP-CAIE-Pseudocode-Highlighting-plugin).
 | TASK 1.1 | `.png` | Flowchart as required for TASK 1.1. |
 | TASK 2.2 | `.png` | Flowchart as required for TASK 2.2. |
 | Item Records | `.txt` | The text file of records as required by TASK 2. |
 
-<br><br>
+
 
 # TASK 1 – Algorithms, arrays and pseudocode
 > The following four 1D arrays can store different pieces of data about stock items in a shop:
@@ -39,7 +41,7 @@ We will assume that the array `ItemDescription` is already defined and populated
 
 | Identifier | Data type | Purpose |
 | -- | -- | --|
-| n | `INTEGER` | Total number of elements |
+| n | `INTEGER` | Total number of elements (pre-defined) |
 | Index | `INTEGER` | The index number after searching |
 | Counter | `INTEGER` | The running counter for the loop |
 | DesiredValue | `STRING` | The value input from the user |
@@ -155,6 +157,8 @@ The planning for each of these in the pseudocode files. The identifier table is 
 | Valid | `BOOLEAN` | Flag for whether or not the the current input is valid | `GetItemCode()` scope
 | TestItemCode | `INTEGER` | The item code temporarily used for input validation | `GetItemCode()` scope |
 | RecordsFile | `STRING` | Constant to store the name of the file containing the records | 1, 2, 3, 4 |
+| FileObject | `FILE OBJECT` | Reference to the opened file | 1, 2, 3, 4 |
+| FileData | `STRING` | Data read from the file while searching | 2, 3, 4 |
 | DetailsOfRecord | `ARRAY[1:4] OF STRING`| Values of all fields of a particular record | 2, 3, 4 |
 | NewPrice | `REAL` | The price of the new item | 1 |
 | NewNumberInStock | `INTEGER` | The number of the new item in stock | 1 |
@@ -163,4 +167,3 @@ The planning for each of these in the pseudocode files. The identifier table is 
 | Found | `BOOLEAN` | Flag for whether or not the desired value is found | 2 |
 | DesiredItemDescription | `STRING` | The given item description that will be serched for | 3 |
 | DesiredPrice | `REAL` | The given price that will be searced for | 4 |
-
