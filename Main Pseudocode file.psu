@@ -57,10 +57,10 @@ IF Index = -1:
     OUTPUT "The element entered was not found."
   
   ELSE
-    OUTPUT "The element entered was found at", Index
+    OUTPUT "The element entered was found at", NUM_TO_STRING(Index)
     OUTPUT "Item Code:", ItemCode[Index]
-    OUTPUT "Price:", Price[Index]
-    OUTPUT "Number in stock:", NumberInStock[Index]
+    OUTPUT "Price:", NUM_TO_STRING(Price[Index])
+    OUTPUT "Number in stock:", NUM_TO_STRING(NumberInStock[Index])
 ENDIF
 
 
@@ -75,7 +75,7 @@ INPUT ThresholdLevel
 FOR Counter ← 1 TO n
     
     IF NumberInStock[Counter] < ThresholdLevel
-      
+     
       THEN
         OUTPUT "Item Code:" & ItemCode[Counter]
         OUTPUT "Item Description:" & ItemDescription[Counter]
@@ -92,15 +92,15 @@ ENDFOR
 // First draw a program flowchart, then write the equivalent pseudocode.
 
 CONSTANT RecordsFile : "Item Records.txt"
-DECLARE NewItemCode, NewItemDescription, WriteString : STRING
-DECLARE NewCounter, NewNumberInStock : INTEGER
+DECLARE NewItemDescription, WriteString : STRING
+DECLARE NewCounter, NewNumberInStock, NewItemCode : INTEGER
 DECLARE NewPrice : REAL
 
 WriteString ← ""
 
 OUTPUT "Enter item code: "
 INPUT NewItemCode
-WriteString ← ':' & NewItemCode
+WriteString ← ':' & NUM_TO_STRING(NewItemCode)
 
 OUTPUT "Enter item description: "
 INPUT NewItemDescription
@@ -118,3 +118,260 @@ WriteString ← WriteString & ':' & NUM_TO_STRING(NumberInStock) & '\n'
 OPENFILE RecordsFile FOR APPEND
 WRITEFILE(RecordsFile, WriteString)
 CLOSEFILE(RecordsFile)
+
+
+// TASK 2.4 (1)
+// Add a new stock item to the text file. Include validation of the different pieces of information as appropriate. For example, item code data may be a fixed format.
+
+CONSTANT RecordsFile : "Item Records.txt"
+DECLARE NewItemDescription, WriteString : STRING
+DECLARE NewCounter, NewNumberInStock : INTEGER
+DECLARE NewPrice : REAL
+
+WriteString ← ""
+
+FUNCTION GetItemCode() RETURNS INTEGER
+    DECLARE Valid : BOOLEAN
+    DECLARE TestItemCode : INTEGER
+    
+    Valid ← FALSE
+    
+    OUTPUT "Enter the code of the item:"
+    INPUT TestItemCode
+    
+    WHILE NOT (TestItemCode > 1000 AND TestItemCode < 9999) DO
+    
+        OUTPUT "Re-enter the code of the item"
+        INPUT TestItemCode
+                    
+    ENDWHILE
+    
+    RETURN TestItemCode
+    
+ENDFUNCTION
+    
+WriteString ← ':' & NUM_TO_STRING(GetItemCode())
+
+OUTPUT "Enter item description: "
+INPUT NewItemDescription
+WriteString ← WriteString & ':' & NewItemDescription
+
+OUTPUT "Enter the price: "
+INPUT NewPrice
+WriteString ← WriteString & ':' & NUM_TO_STRING(NewPrice)
+
+OUTPUT "Enter number of items in stock: "
+INPUT NewNumberInStock
+WriteString ← WriteString & ':' & NUM_TO_STRING(NumberInStock) & '\n'
+
+
+OPENFILE RecordsFile FOR APPEND
+WRITEFILE(RecordsFile, WriteString)
+CLOSEFILE(RecordsFile)
+
+
+// TASK 2.4 (2)
+// Search for a stock item with a specific item code. Output the other pieces of data together with suitable supporting text.
+
+CONSTANT RecordsFile : "Item Records.txt"
+DECLARE CurrentRecord : STRING
+DECLARE DesiredItemCode : INTEGER
+DECLARE Found : BOOLEAN
+DECLARE DetailsOfRecord : ARRAY[1:4] OF STRING
+Found ← FALSE
+
+FUNCTION GetItemCode() RETURNS INTEGER
+    DECLARE Valid : BOOLEAN
+    DECLARE TestItemCode : INTEGER
+    
+    Valid ← FALSE
+    
+    OUTPUT "Enter the code of the item:"
+    INPUT TestItemCode
+    
+    WHILE NOT (TestItemCode > 1000 AND TestItemCode < 9999) DO
+    
+        OUTPUT "Re-enter the code of the item"
+        INPUT TestItemCode
+                    
+    ENDWHILE
+    
+    RETURN TestItemCode
+    
+ENDFUNCTION
+
+PROCEDURE ExtractDetails (BYREF RecordString : STRING, Details : ARRAY[1:4] OF STRING)
+    DECLARE Position, Counter : INTEGER
+    DECLARE CurrentCharacter : CHAR
+    DECLARE SearchString : STRING
+
+    IF RecordString <> ""
+      THEN
+    
+        Position ← 1
+        SearchString ← RecordString & ':'
+        
+        FOR Counter ← 1 TO 4
+            Position ← Position + 1
+            CurrentCharacter ← MID(RecordString, Position, 1)
+            
+            WHILE CurrentCharacter <> ':' DO
+                Details[Counter] ← Details[Counter] & CurrentCharacter
+                Position ← Position + 1
+                CurrentCharacter ← MID(RecordString, Position, 1)
+            ENDWHILE
+        
+        ENDFOR
+    
+    ENDIF
+
+ENDPROCEDURE
+
+OUTPUT "Enter the code of the item you want to search for."
+DesiredItemCode = GetItemCode()
+
+OPENFILE RecordsFile FOR READ
+
+REPEAT
+    READFILE RecordsFile, CurrentRecord
+    
+    IF MID(CurrentRecord, 2, 4) = DesiredItemCode
+      THEN
+        Found ← TRUE
+    ENDIF
+    
+UNTIL EOF() OR Found
+
+CLOSEFILE RecordsFile
+
+IF Found = TRUE
+  
+  THEN
+    DetailsOfRecord = ["", "", "", ""]
+    ExtractDetails(CurrentRecord, DetailsOfRecord)
+
+    OUTPUT "Item Code: " & NUM_TO_STRING(DetailsOfRecord[1])
+    OUTPUT "Item Description: " & DetailsOfRecord[2]
+    OUTPUT "Price of item: " & NUM_TO_STRING(DetailsOfRecord[3])
+    OUTPUT "Number of the item in stock: " & NUM_TO_STRING(DetailsOfRecord[4])
+
+  ELSE
+    OUTPUT "Item not found."
+
+ENDIF
+
+
+// TASK 2.4 (3)
+// Search for all stock items with a specific item description, with output as for task 2.
+
+CONSTANT RecordsFile : "Item Records.txt"
+DECLARE CurrentRecord, DesiredItemDescription : STRING
+DECLARE DetailsOfRecord : ARRAY[1:4] OF STRING
+
+PROCEDURE ExtractDetails (BYREF RecordString : STRING, Details : ARRAY[1:4] OF STRING)
+    DECLARE Position, Counter : INTEGER
+    DECLARE CurrentCharacter : CHAR
+    DECLARE SearchString : STRING
+
+    IF RecordString <> ""
+      THEN
+    
+        Position ← 1
+        SearchString ← RecordString & ':'
+        
+        FOR Counter ← 1 TO 4
+            Position ← Position + 1
+            CurrentCharacter ← MID(RecordString, Position, 1)
+            
+            WHILE CurrentCharacter <> ':' DO
+                Details[Counter] ← Details[Counter] & CurrentCharacter
+                Position ← Position + 1
+                CurrentCharacter ← MID(RecordString, Position, 1)
+            ENDWHILE
+        
+        ENDFOR
+    
+    ENDIF
+
+ENDPROCEDURE
+
+OUTPUT "Enter the description of the item you want to search for."
+INPUT DesiredItemDescription
+
+OPENFILE RecordsFile FOR READ
+
+REPEAT
+    READFILE RecordsFile, CurrentRecord
+    DetailsOfRecord = ["", "", "", ""]
+    ExtractDetails(CurrentRecord, DetailsOfRecord)
+    
+    IF DetailsOfRecord[2] = DesiredItemCode
+      THEN
+        OUTPUT "Item Code: " & NUM_TO_STRING(DetailsOfRecord[1])
+        OUTPUT "Item Description: " & DetailsOfRecord[2]
+        OUTPUT "Price of item: " & NUM_TO_STRING(DetailsOfRecord[3])
+        OUTPUT "Number of the item in stock: " & NUM_TO_STRING(DetailsOfRecord[4])
+    ENDIF
+    
+UNTIL EOF() OR Found
+
+CLOSEFILE RecordsFile
+
+
+// TASK 2.4 (4)
+// Output a list of all stock items with a price greater than a given amount.
+
+CONSTANT RecordsFile : "Item Records.txt"
+DECLARE CurrentRecord : STRING
+DECLARE DesiredPrice : INTEGER
+DECLARE DetailsOfRecord : ARRAY[1:4] OF STRING
+
+
+PROCEDURE ExtractDetails (BYREF RecordString : STRING, Details : ARRAY[1:4] OF STRING)
+    DECLARE Position, Counter : INTEGER
+    DECLARE CurrentCharacter : CHAR
+    DECLARE SearchString : STRING
+
+    IF RecordString <> ""
+      THEN
+    
+        Position ← 1
+        SearchString ← RecordString & ':'
+        
+        FOR Counter ← 1 TO 4
+            Position ← Position + 1
+            CurrentCharacter ← MID(RecordString, Position, 1)
+            
+            WHILE CurrentCharacter <> ':' DO
+                Details[Counter] ← Details[Counter] & CurrentCharacter
+                Position ← Position + 1
+                CurrentCharacter ← MID(RecordString, Position, 1)
+            ENDWHILE
+        
+        ENDFOR
+    
+    ENDIF
+
+ENDPROCEDURE
+
+OUTPUT "Enter the maximum threshold price: "
+INPUT DesiredPrice
+
+OPENFILE RecordsFile FOR READ
+
+REPEAT
+    READFILE RecordsFile, CurrentRecord
+    DetailsOfRecord = ["", "", "", ""]
+    ExtractDetails(CurrentRecord, DetailsOfRecord)
+    
+    IF DetailsOfRecord[3] < DesiredPrice
+      THEN
+        OUTPUT "Item Code: " & NUM_TO_STRING(DetailsOfRecord[1])
+        OUTPUT "Item Description: " & DetailsOfRecord[2]
+        OUTPUT "Price of item: " & NUM_TO_STRING(DetailsOfRecord[3])
+        OUTPUT "Number of the item in stock: " & NUM_TO_STRING(DetailsOfRecord[4])
+    ENDIF
+    
+UNTIL EOF()
+
+CLOSEFILE RecordsFile
