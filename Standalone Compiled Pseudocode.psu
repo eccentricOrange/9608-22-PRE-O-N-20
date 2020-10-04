@@ -1,0 +1,214 @@
+// Standalone Compiled Program
+// The above code demonstrates how each individual aspect of each task works.
+// The code below is for every task combined into one, and can run independently.
+// Rough positions of the different tasks are still indicated.
+
+// Variables used in the programs (see identifier tables)
+DECLARE Found : BOOLEAN
+DECLARE n, Index, Counter, ThresholdLevel, NewItemCode, NewNumberInStock, DesiredItemCode: INTEGER
+DECLARE NewPrice, DesiredPrice : REAL
+DECLARE DesiredValue, NewItemDescription, DesiredItemDescription, WriteString: STRING
+DECLARE FileData : ARRAY[1:n] OF STRING
+DECLARE DetailsOfRecord : ARRAY[1:4] OF STRING
+
+// Constant for the name of the file
+CONSTANT RecordsFile ← "Item Records.txt"
+
+// Open file for "APPEND"
+OPENFILE RecordsFile FOR APPEND
+
+// Subroutine to input a valid item code
+FUNCTION GetItemCode RETURNS INTEGER:
+    DECLARE Valid ← False
+    DECLARE TestItemCode : INTEGER
+
+    OUTPUT "\nEnter the code of the item: "
+    INPUT TestItemCode
+    
+    WHILE NOT (TestItemCode > 1000 AND TestItemCode < 9999) DO
+        OUTPUT "Re-enter the code of the item: "
+        INPUT TestItemCode
+    ENDWHILE
+    
+    RETURN TestItemCode
+ENDFUNCTION
+
+// Subroutine to extract details of a given record string into an array
+PROCEDURE ExtractDetails(BYREF: RecordString: STRING, Details : ARRAY[1:4] OF STRING):
+    DECLARE SearchString : STRING
+    DECLARE CurrentCharacter : CHAR
+    DECLARE Position, Counter : INTEGER
+    
+    Position ← 0
+    SearchString ← RecordString & ':'
+
+    IF RecordString <> ""
+      THEN
+      
+        FOR Counter ← 1 TO 4
+            Position ← Position + 1
+            CurrentCharacter ← MID(SearchString, Position, 1)
+
+            WHILE CurrentCharacter <> ':' DO
+                Details[Counter] ← Details[Counter] & CurrentCharacter
+                Position ← Position + 1
+                CurrentCharacter ← MID(SearchString, Position, 1)
+            ENDWHILE
+        
+        ENDFOR
+    ENDIF
+    
+ENDPROCEDURE
+
+
+// TASK 1.4
+OUTPUT "Enter the minumum stock level: "
+INPUT ThresholdLevel
+
+FOR Counter ← 1 TO n
+
+    IF NumberInStock[Counter] < ThresholdLevel
+      THEN
+        OUTPUT "\nItem Code:" & ItemCode[Counter]
+        OUTPUT "Item Description:" & ItemDescription[Counter]
+        OUTPUT "Price:" & NUM_TO_STRING(Price[Counter])
+        OUTPUT "Number in stock:" & NUM_TO_STRING(NumberInStock[Counter])
+    ENDIF
+ENDFOR
+
+
+// TASK 2.2
+WriteString ← ""
+
+OUTPUT "\nEnter item code: "
+INPUT NewItemCode
+WriteString ← ':' & NUM_TO_STRING(NewItemCode)
+
+OUTPUT "Enter item description: "
+INPUT NewItemDescription
+WriteString ← WriteString & ':' & NewItemDescription
+
+OUTPUT "Enter new price: "
+INPUT NewPrice
+WriteString ← WriteString & ':' & NUM_TO_STRING(NewPrice)
+
+OUTPUT "Enter the number of items in stock: "
+INPUT NewNumberInStock
+WriteString ← WriteString & ':' & NUM_TO_STRING(NewNumberInStock) & '\n'
+
+WRITEFILE RecordsFile, WriteString
+
+
+// TAKS 2.4 (1)
+WriteString ← ""
+
+WriteString ← ':' & NUM_TO_STRING(GetItemCode())
+
+OUTPUT "Enter item description: "
+INPUT NewItemDescription
+WriteString ← WriteString & ':' & NewItemDescription
+
+OUTPUT "Enter new price: "
+INPUT NewPrice
+WriteString ← WriteString & ':' & NUM_TO_STRING(NewPrice)
+
+OUTPUT "Enter the number of items in stock: "
+INPUT NewNumberInStock
+WriteString ← WriteString & ':' & NUM_TO_STRING(NewNumberInStock) & '\n'
+
+WRITEFILE RecordsFile, WriteString
+
+
+// Close the file and save changes
+CLOSEFILE RecordsFile
+
+OPENFILE RecordsFile FOR READ
+
+// Read data from the file into an array. They are also split using the newline delimiter '\n'.
+// This is done in Python using the code in the line below
+// FileData = (FileObject.read()).split('\n')
+
+DECLARE Counter : INTEGER
+Counter ← 1
+
+REPEAT
+    READFILE RecordsFile, FileData[Counter]
+UNTIL EOF(RecordsFile)
+
+// Store the number of records in the constant n
+CONSTANT n : Counter
+
+// Close the file
+CLOSEFILE RecordsFile
+
+// TASK 2.4 (2)
+Found ← FALSE
+
+OUTPUT "\nEnter the code of the item you want to search for"
+DesiredItemCode ← GetItemCode()
+
+Counter ← 1
+REPEAT
+
+    IF MID(FileData[Counter],2,4) = NUM_TO_STRING(DesiredItemCode)
+      THEN
+        Found ← TRUE
+        Counter ← Counter + 1
+    ENDIF
+    
+UNTIL Counter > n OR Found
+
+IF Found
+  THEN
+    DetailsOfRecord ← ["", "", "", ""]
+    ExtractDetails(FileData[Count], DetailsOfRecord)
+
+    OUTPUT "\nItem Code: " & NUM_TO_STRING(DetailsOfRecord[1])
+    OUTPUT "Item Description: " & DetailsOfRecord[2]
+    OUTPUT "Price of item: " & NUM_TO_STRING(DetailsOfRecord[3])
+    OUTPUT "Number of the item in stock: " & NUM_TO_STRING(DetailsOfRecord[4])
+
+  ELSE
+    OUTPUT "Item not found."
+
+ENDIF
+
+
+// TASK 2.4 (3)
+OUTPUT "\nEnter the description of the item you want to search for: "
+INPUT DesiredItemDescription
+
+FOR Counter ← 1 TO n
+
+    DetailsOfRecord ← ["", "", "", ""]
+    ExtractDetails(FileData[Counter], DetailsOfRecord)
+
+    IF DetailsOfRecord[2] = DesiredItemDescription
+      THEN
+        OUTPUT "\nItem Code: " & NUM_TO_STRING(DetailsOfRecord[1])
+        OUTPUT "Item Description: " & DetailsOfRecord[2]
+        OUTPUT "Price of item: " & NUM_TO_STRING(DetailsOfRecord[3])
+        OUTPUT "Number of the item in stock: " & NUM_TO_STRING(DetailsOfRecord[4])
+    ENDIF
+
+ENDFOR
+
+
+// TASK 2.4 (4)
+OUTPUT "\nEnter the maximum threshold price: "
+INPUT DesiredPrice
+
+FOR Counter ← 1 TO n
+
+    DetailsOfRecord ← ["", "", "", ""]
+    ExtractDetails(FileData[Counter], DetailsOfRecord)
+
+    IF STRING_TO_NUM(DetailsOfRecord[3]) < DesiredPrice
+      THEN
+        OUTPUT "\nItem Code: " & NUM_TO_STRING(DetailsOfRecord[1])
+        OUTPUT "Item Description: " & DetailsOfRecord[2]
+        OUTPUT "Price of item: " & NUM_TO_STRING(DetailsOfRecord[3])
+        OUTPUT "Number of the item in stock: " & NUM_TO_STRING(DetailsOfRecord[4])
+    ENDIF
+
+ENDFOR

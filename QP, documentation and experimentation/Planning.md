@@ -5,27 +5,28 @@ These are the files that constute the solution to the pre-release material for C
 | Filename | Type | Purpose |
 | -- | -- | -- |
 | 9608_w20_PM_22 | `.pdf` | The pre-release material file released by CAIE. |
-| Planning | `.md` | This is the markdown text file this PDF was created from. |
+| Planning | `.md` | This is the markdown text file that this PDF was created from. |
 | Planning | `.pdf` | You are currently reading this file. It describes the solution used in answering the pre-release material and houses all material apart from code (such as identifier tables and structured English). |
 | Main Python notebook | `.ipynb` | The [Jupyter Notebook](https://jupyter.org/) in which the Python code was originally written. |
 | Main Python notebook | `.pdf` | The PDF version of the Jupyter Notebook (for the viewer whose system doesn't have Jupyter). |
-| Main Python Code | `.py` | The Python 3.8 file that contains all executable code (for the viewer whose system doesn't have Jupyter). |
-| Main Pseudocode file | `.psu` | The file containing all the pseudocode, written using an open-source [custom-built extension](https://github.com/eccentricOrange/NPP-CAIE-Pseudocode-Highlighting-plugin).
+| Component Programs | `.py` | The Python 3.8 file that contains all executable code (for the viewer whose system doesn't have Jupyter). | 
+| Conponent Pseudocode | `.psu` | All pseudocode, grouped by the task numbers, written using an open-source [custom-built extension](https://github.com/eccentricOrange/NPP-CAIE-Pseudocode-Highlighting-plugin). |
+| Standalone Compiled Program | `.py` | The final Python program. |
+| Standalone Compiled Pseudocode | `.psu` | The final pseudocode. |
 | TASK 1.1 | `.png` | Flowchart as required for TASK 1.1. |
 | TASK 2.2 | `.png` | Flowchart as required for TASK 2.2. |
-| Item Records | `.txt` | The text file of records as required by TASK 2. |
+| Item Records | `.txt` | Text file of records as required by TASK 2. |
 
 
 
 # TASK 1 – Algorithms, arrays and pseudocode
 > The following four 1D arrays can store different pieces of data about stock items in a shop:
-
-| Array Identifier | Data Type |
-| -- | -- |
-| ItemCode | `STRING` |
-| ItemDescription | `STRING` |
-| Price | `REAL` |
-| NumberInStock | `INTEGER` |
+> | Array Identifier | Data Type |
+> | -- | -- |
+> | ItemCode | `STRING` |
+> | ItemDescription | `STRING` |
+> | Price | `REAL` |
+> | NumberInStock | `INTEGER` |
 
 The `ItemCode` must be of type `INTEGER` and be between `1000` and `9999`. It is, however, stored as type `STRING`.
 <br>
@@ -64,7 +65,7 @@ To search for multiple values, we can consider an array `Indices : ARRAY[1:n] OF
 ## TASK 1.3
 > Extend the algorithm from Task 1.1 to output the corresponding values from the other arrays.
 
-Extension is recorded in the pseuducode file. We will assume that the following arrays pre-populated.
+The planning is recorded in the pseuducode file. We will assume that the following arrays pre-populated.
 
 | Identifier | Data type | Purpose |
 | -- | -- | --|
@@ -100,7 +101,7 @@ The values for any given reocrd will be separated by colons. Records themselves 
 :ItemCode_1:ItemDescription_1:Price_1:NumberInStock_1\n
 :ItemCode_2:ItemDescription_2:Price_2:NumberInStock_2\n
 ```
-Values for `Price` and `NumberInStock` would have to be convetred to `STRING` using `NUM_TO_STRING()` in pseudocode or `str()` in Python because the functions to write only take a `STRING` as an input.
+Values for `ItemCode`, `Price` and `NumberInStock` would have to be convetred to `STRING` using `NUM_TO_STRING()` in pseudocode or `str()` in Python because the functions to write to a file only take a `STRING` as an input.
 
 <br><br>
 
@@ -120,7 +121,7 @@ The pseudocode and flowcharts for this section are stored in their repective fil
 ## TASK 2.4
 > Consider the different modes when opening a file.
 
-Files can be opened using the following modes in Python.
+Files can be opened using the following modes in Python. We will use the one(s) most appropriate.
 
 | Mode | Functionality |
 | -- | -- |
@@ -152,7 +153,7 @@ The planning for each of these in the pseudocode files. The identifier table is 
 | Details | `ARRAY[1:4] OF STRING` | The array into which all fields are extracted | `ExtractDetails()` scope |
 | Position | `INTEGER` | Pointer to the current position in the string | `ExtractDetails()` scope |
 | Counter | `INTEGER` | The counter for the `FOR` loop iterations | `ExtractDetails()` scope |
-| CurrentChar | `CHAR` | The character currently being examined | `ExtractDetails()` scope |
+| CurrentCharacter | `CHAR` | The character currently being examined | `ExtractDetails()` scope |
 | `GetItemCode()` | `FUNCTION` | A function that inputs and returns a valid item code | 1, 2 |
 | Valid | `BOOLEAN` | Flag for whether or not the the current input is valid | `GetItemCode()` scope
 | TestItemCode | `INTEGER` | The item code temporarily used for input validation | `GetItemCode()` scope |
@@ -167,3 +168,19 @@ The planning for each of these in the pseudocode files. The identifier table is 
 | Found | `BOOLEAN` | Flag for whether or not the desired value is found | 2 |
 | DesiredItemDescription | `STRING` | The given item description that will be serched for | 3 |
 | DesiredPrice | `REAL` | The given price that will be searced for | 4 |
+
+<br>
+
+# TASK 3 – Testing
+
+## TASK 3.1
+> You need to design tests to prove that the program works as expected.
+> Create a table for a test plan, with columns for:
+> * data item tested
+> * type of test data (to explain why you choose the test data value)
+> * test data value
+> * expected output
+> * actual output.
+> 
+> Complete the test plan.
+
