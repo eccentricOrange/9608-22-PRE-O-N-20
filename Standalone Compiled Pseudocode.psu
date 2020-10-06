@@ -1,7 +1,9 @@
-// Standalone Compiled Program
+// 9608/22/PRE/O/N/20 Standalone Compiled Pseudocode
 // The above code demonstrates how each individual aspect of each task works.
 // The code below is for every task combined into one, and can run independently.
 // Rough positions of the different tasks are still indicated.
+// Last update: Anuj Verma, 03:16 PM 06/10/2020
+
 
 // Variables used in the programs (see identifier tables)
 DECLARE Found : BOOLEAN
@@ -18,19 +20,57 @@ CONSTANT RecordsFile ← "Item Records.txt"
 OPENFILE RecordsFile FOR APPEND
 
 // Subroutine to input a valid item code
-FUNCTION GetItemCode RETURNS INTEGER:
-    DECLARE Valid ← False
+FUNCTION GetItemCode() RETURNS INTEGER
     DECLARE TestItemCode : INTEGER
-
-    OUTPUT "\nEnter the code of the item: "
+        
+    OUTPUT "Enter the code of the item:"
     INPUT TestItemCode
     
     WHILE NOT (TestItemCode > 1000 AND TestItemCode < 9999) DO
+    
         OUTPUT "Re-enter the code of the item: "
         INPUT TestItemCode
+                    
     ENDWHILE
     
     RETURN TestItemCode
+    
+ENDFUNCTION
+
+// Subroutine to input a valid item price
+FUNCTION GetPrice() RETURNS REAL
+    DECLARE TestPrice : REAL
+    
+    OUTPUT "Enter the price of the item:"
+    INPUT TestPrice
+    
+    WHILE NOT (TestPrice > 0) DO
+    
+        OUTPUT "Re-enter the price of the item: "
+        INPUT TestPrice
+                    
+    ENDWHILE
+    
+    RETURN TestPrice
+    
+ENDFUNCTION
+
+// Subroutine to input a valid number of items in stock
+FUNCTION GetNumberInStock() RETURNS INTEGER
+    DECLARE TestNumberInStock : INTEGER
+    
+    OUTPUT "Enter the number of the item in stock:"
+    INPUT TestNumberInStock
+    
+    WHILE NOT (TestNumberInStock > 0) DO
+    
+        OUTPUT "Re-enter the number of the item in stock: "
+        INPUT TestNumberInStock
+                    
+    ENDWHILE
+    
+    RETURN TestNumberInStock
+    
 ENDFUNCTION
 
 // Subroutine to extract details of a given record string into an array
@@ -108,13 +148,9 @@ OUTPUT "Enter item description: "
 INPUT NewItemDescription
 WriteString ← WriteString & ':' & NewItemDescription
 
-OUTPUT "Enter new price: "
-INPUT NewPrice
-WriteString ← WriteString & ':' & NUM_TO_STRING(NewPrice)
+WriteString ← WriteString & ':' & NUM_TO_STRING(GetPrice())
 
-OUTPUT "Enter the number of items in stock: "
-INPUT NewNumberInStock
-WriteString ← WriteString & ':' & NUM_TO_STRING(NewNumberInStock) & '\n'
+WriteString ← WriteString & ':' & NUM_TO_STRING(GetNumberInStock()) & '\n'
 
 WRITEFILE RecordsFile, WriteString
 
@@ -144,7 +180,7 @@ CLOSEFILE RecordsFile
 // TASK 2.4 (2)
 Found ← FALSE
 
-OUTPUT "\nEnter the code of the item you want to search for"
+OUTPUT "\nEnter the code of the item you want to search for."
 DesiredItemCode ← GetItemCode()
 
 Counter ← 1
@@ -195,15 +231,15 @@ ENDFOR
 
 
 // TASK 2.4 (4)
-OUTPUT "\nEnter the maximum threshold price: "
-INPUT DesiredPrice
+OUTPUT "\nEnter the maximum threshold price."
+ThresholdPrice ← GetPrice()
 
 FOR Counter ← 1 TO n
 
     DetailsOfRecord ← ["", "", "", ""]
     ExtractDetails(FileData[Counter], DetailsOfRecord)
 
-    IF STRING_TO_NUM(DetailsOfRecord[3]) < DesiredPrice
+    IF STRING_TO_NUM(DetailsOfRecord[3]) < ThresholdPrice
       THEN
         OUTPUT "\nItem Code: " & NUM_TO_STRING(DetailsOfRecord[1])
         OUTPUT "Item Description: " & DetailsOfRecord[2]

@@ -1,3 +1,8 @@
+# # 9608/22/PRE/O/N/2020
+# # Standalone Compliled Program
+# # The code below is for every task combined into one, and can run independently.
+
+
 ## Arrays which are supposed to be pre-populated
 ItemCode = ["1001", "6056", "5557", "2568", "4458"]
 ItemDescription = ["Pencil", "Pen", "Notebook", "Ruler", "Compass"]
@@ -15,14 +20,30 @@ FileObject = open(RecordsFile, "a")
 
 ## Subroutine to input a valid item code
 def GetItemCode():
-    Valid = False
-
-    TestItemCode = int(input("\nEnter the code of the item: "))
+    TestItemCode = int(input("Enter the code of the item: "))
 
     while not (TestItemCode > 1000 and TestItemCode < 9999):
-        TestItemCode = int(input("Re-enter the codeof the item: "))
+        TestItemCode = int(input("Re-enter the code of the item: "))
     
     return TestItemCode
+
+## Subroutine to input a valid number of the item in stock
+def GetNumberInStock():
+    TestNumberInStock = int(input("Enter the number of the item in stock: "))
+
+    while not (TestNumberInStock >= 0):
+        TestNumberInStock = int(input("Re-enter the number of the item in stock: "))
+    
+    return TestNumberInStock
+
+## Subroutine to input a valid item price
+def GetPrice():
+    TestPrice = float(input("Enter the price of the item: "))
+
+    while not (TestPrice >= 0):
+        TestPrice = float(input("Re-enter the price  of the item: "))
+    
+    return TestPrice
 
 ## Subroutine to extract details of a given record string into an array
 def ExtractDetails(RecordString, Details):
@@ -70,6 +91,8 @@ WriteString += ':' + str(NewNumberInStock) + '\n'
 FileObject.write(WriteString)
 
 
+print("")
+
 ## TAKS 2.4 (1)
 WriteString = ""
 WriteString = ':' + str(GetItemCode())
@@ -77,11 +100,9 @@ WriteString = ':' + str(GetItemCode())
 NewItemDescription = str(input("Enter item description: "))
 WriteString += ':' + NewItemDescription
 
-NewPrice = float(input("Enter the price of the item: "))
-WriteString += ':' + str(NewPrice)
+WriteString += ':' + str(GetPrice())
 
-NewNumberInStock = int(input("Enter number of items in stock: "))
-WriteString += ':' + str(NewNumberInStock) + '\n'
+WriteString += ':' + str(GetNumberInStock()) + '\n'
 
 FileObject.write(WriteString)
 
@@ -104,7 +125,7 @@ FileObject.close()
 ## TASK 2.4 (2)
 Found = False
 
-print("\nEnter the code of the item you want to search for")
+print("\nEnter the code of the item you want to search for.")
 DesiredItemCode = GetItemCode()
 
 for record in FileData:
@@ -140,13 +161,14 @@ for record in FileData:
 
 
 ## TASK 2.4 (4)
-DesiredPrice = float(input("\nEnter the maximum threshold price: "))
+print ("\nEnter the maximum threshold price.")
+ThresholdPrice = GetPrice()
 
 for record in FileData:
     DetailsOfRecord = ["" for i in range(4)]
     ExtractDetails(record, DetailsOfRecord)
 
-    if float(DetailsOfRecord[2]) < DesiredPrice:
+    if float(DetailsOfRecord[2]) < ThresholdPrice:
         print("\nItem Code: " + str(DetailsOfRecord[0]))
         print("Item Description: " + DetailsOfRecord[1])
         print("Price of item: " + str(DetailsOfRecord[2]))

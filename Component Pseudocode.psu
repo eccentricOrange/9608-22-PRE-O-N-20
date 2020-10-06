@@ -1,3 +1,6 @@
+// 9608/22/PRE/O/N/20 Component Pseudocode
+// Last update: Anuj Verma, 03:16 PM 06/10/2020
+
 // TASK 1
 
 // TASK 1.1
@@ -131,17 +134,14 @@ DECLARE NewPrice : REAL
 WriteString ← ""
 
 FUNCTION GetItemCode() RETURNS INTEGER
-    DECLARE Valid : BOOLEAN
     DECLARE TestItemCode : INTEGER
-    
-    Valid ← FALSE
-    
+        
     OUTPUT "Enter the code of the item:"
     INPUT TestItemCode
     
     WHILE NOT (TestItemCode > 1000 AND TestItemCode < 9999) DO
     
-        OUTPUT "Re-enter the code of the item"
+        OUTPUT "Re-enter the code of the item: "
         INPUT TestItemCode
                     
     ENDWHILE
@@ -149,6 +149,43 @@ FUNCTION GetItemCode() RETURNS INTEGER
     RETURN TestItemCode
     
 ENDFUNCTION
+
+
+FUNCTION GetPrice() RETURNS REAL
+    DECLARE TestPrice : REAL
+    
+    OUTPUT "Enter the price of the item:"
+    INPUT TestPrice
+    
+    WHILE NOT (TestPrice > 0) DO
+    
+        OUTPUT "Re-enter the price of the item: "
+        INPUT TestPrice
+                    
+    ENDWHILE
+    
+    RETURN TestPrice
+    
+ENDFUNCTION
+
+
+FUNCTION GetNumberInStock() RETURNS INTEGER
+    DECLARE TestNumberInStock : INTEGER
+    
+    OUTPUT "Enter the number of the item in stock:"
+    INPUT TestNumberInStock
+    
+    WHILE NOT (TestNumberInStock > 0) DO
+    
+        OUTPUT "Re-enter the number of the item in stock: "
+        INPUT TestNumberInStock
+                    
+    ENDWHILE
+    
+    RETURN TestNumberInStock
+    
+ENDFUNCTION
+
     
 WriteString ← ':' & NUM_TO_STRING(GetItemCode())
 
@@ -156,13 +193,9 @@ OUTPUT "Enter item description: "
 INPUT NewItemDescription
 WriteString ← WriteString & ':' & NewItemDescription
 
-OUTPUT "Enter the price: "
-INPUT NewPrice
-WriteString ← WriteString & ':' & NUM_TO_STRING(NewPrice)
+WriteString ← WriteString & ':' & NUM_TO_STRING(GetPrice())
 
-OUTPUT "Enter number of items in stock: "
-INPUT NewNumberInStock
-WriteString ← WriteString & ':' & NUM_TO_STRING(NumberInStock) & '\n'
+WriteString ← WriteString & ':' & NUM_TO_STRING(GetNumberInStock()) & '\n'
 
 
 OPENFILE RecordsFile FOR APPEND
@@ -181,11 +214,8 @@ DECLARE DetailsOfRecord : ARRAY[1:4] OF STRING
 Found ← FALSE
 
 FUNCTION GetItemCode() RETURNS INTEGER
-    DECLARE Valid : BOOLEAN
     DECLARE TestItemCode : INTEGER
-    
-    Valid ← FALSE
-    
+        
     OUTPUT "Enter the code of the item:"
     INPUT TestItemCode
     
@@ -323,9 +353,25 @@ CLOSEFILE RecordsFile
 
 CONSTANT RecordsFile : "Item Records.txt"
 DECLARE CurrentRecord : STRING
-DECLARE DesiredPrice : INTEGER
+DECLARE ThresholdPrice : REAL
 DECLARE DetailsOfRecord : ARRAY[1:4] OF STRING
 
+FUNCTION GetPrice() RETURNS REAL
+    DECLARE TestPrice : REAL
+    
+    OUTPUT "Enter the price of the item:"
+    INPUT TestPrice
+    
+    WHILE NOT (TestPrice > 0) DO
+    
+        OUTPUT "Re-enter the price of the item: "
+        INPUT TestPrice
+                    
+    ENDWHILE
+    
+    RETURN TestPrice
+    
+ENDFUNCTION
 
 PROCEDURE ExtractDetails (BYREF RecordString : STRING, Details : ARRAY[1:4] OF STRING)
     DECLARE Position, Counter : INTEGER
@@ -354,8 +400,8 @@ PROCEDURE ExtractDetails (BYREF RecordString : STRING, Details : ARRAY[1:4] OF S
 
 ENDPROCEDURE
 
-OUTPUT "Enter the maximum threshold price: "
-INPUT DesiredPrice
+OUTPUT "Enter the maximum threshold price."
+ThresholdPrice ← GetPrice()
 
 OPENFILE RecordsFile FOR READ
 
@@ -364,7 +410,7 @@ REPEAT
     DetailsOfRecord = ["", "", "", ""]
     ExtractDetails(CurrentRecord, DetailsOfRecord)
     
-    IF DetailsOfRecord[3] < DesiredPrice
+    IF DetailsOfRecord[3] < ThresholdPrice
       THEN
         OUTPUT "Item Code: " & NUM_TO_STRING(DetailsOfRecord[1])
         OUTPUT "Item Description: " & DetailsOfRecord[2]

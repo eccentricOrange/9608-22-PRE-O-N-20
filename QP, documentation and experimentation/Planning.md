@@ -1,4 +1,5 @@
 # 9608/22/PRE/O/N/20
+Last update: Anuj Verma, 03:16 PM 06/10/2020
 
 ## Files
 These are the files that constute the solution to the pre-release material for Computer Science component 9608/22 of the October/November 2020 examination series.
@@ -17,7 +18,7 @@ These are the files that constute the solution to the pre-release material for C
 | TASK 2.2 | `.png` | Flowchart as required for TASK 2.2. |
 | Item Records | `.txt` | Text file of records as required by TASK 2. |
 
-
+<div style="page-break-after: always"></div>
 
 # TASK 1 – Algorithms, arrays and pseudocode
 > The following four 1D arrays can store different pieces of data about stock items in a shop:
@@ -47,7 +48,8 @@ We will assume that the array `ItemDescription` is already defined and populated
 | Counter | `INTEGER` | The running counter for the loop |
 | DesiredValue | `STRING` | The value input from the user |
 | ItemDescription | `ARRAY[1:n] OF STRING` | The pre-populated array of descriptions |
-<br>
+
+<div style="page-break-after: always"></div>
 
 **Program in Structured English**
 1. Set `Index` equal to `-1`.
@@ -103,7 +105,6 @@ The values for any given reocrd will be separated by colons. Records themselves 
 ```
 Values for `ItemCode`, `Price` and `NumberInStock` would have to be convetred to `STRING` using `NUM_TO_STRING()` in pseudocode or `str()` in Python because the functions to write to a file only take a `STRING` as an input.
 
-<br><br>
 
 ## TASK 2.2
 > Design an algorithm to input the four pieces of data about a stock item, form a string according to your format design, and write the string to the text file. <br> First draw a program flowchart, then write the equivalent pseudocode.
@@ -155,8 +156,11 @@ The planning for each of these in the pseudocode files. The identifier table is 
 | Counter | `INTEGER` | The counter for the `FOR` loop iterations | `ExtractDetails()` scope |
 | CurrentCharacter | `CHAR` | The character currently being examined | `ExtractDetails()` scope |
 | `GetItemCode()` | `FUNCTION` | A function that inputs and returns a valid item code | 1, 2 |
-| Valid | `BOOLEAN` | Flag for whether or not the the current input is valid | `GetItemCode()` scope
 | TestItemCode | `INTEGER` | The item code temporarily used for input validation | `GetItemCode()` scope |
+| `GetPrice()` | `FUNCTION` | A function that inputs and returns a valid item price | 1, 4 |
+| TestItemCode | `INTEGER` | The item code temporarily used for input validation | `GetPrice()` scope |
+| `GetNumberInStock()` | `FUNCTION` | A function that inputs and returns a valid number of the items in stock | 1 |
+| TestItemCode | `INTEGER` | The item code temporarily used for input validation | `GetNumberInStock()` scope |
 | RecordsFile | `STRING` | Constant to store the name of the file containing the records | 1, 2, 3, 4 |
 | FileObject | `FILE OBJECT` | Reference to the opened file | 1, 2, 3, 4 |
 | FileData | `STRING` | Data read from the file while searching | 2, 3, 4 |
@@ -167,9 +171,9 @@ The planning for each of these in the pseudocode files. The identifier table is 
 | DesiredItemCode | `INTEGER` | The given item code that will be searched for | 2 |
 | Found | `BOOLEAN` | Flag for whether or not the desired value is found | 2 |
 | DesiredItemDescription | `STRING` | The given item description that will be serched for | 3 |
-| DesiredPrice | `REAL` | The given price that will be searced for | 4 |
+| ThresholdPrice | `REAL` | The given price that will be searced for | 4 |
 
-<br>
+<br><br>
 
 # TASK 3 – Testing
 
@@ -184,3 +188,43 @@ The planning for each of these in the pseudocode files. The identifier table is 
 > 
 > Complete the test plan.
 
+| Data | Type | Value | Actual output | Expected output |
+| -- | -- | -- | -- | -- |
+| Minimum stock level | Normal | `30` | Item Code: 2568<br>Item Description: Ruler<br>Price: 20.0<br>Number in stock: 20<br><br>Item Code: 4458<br>Item Description: Compass<br>Price: 30.0<br>Number in stock: 20 | Item Code: 2568<br>Item Description: Ruler<br>Price: 20.0<br>Number in stock: 20<br><br>Item Code: 4458<br>Item Description: Compass<br>Price: 30.0<br>Number in stock: 20 |
+| New item | Normal | `1020`, `"Pen"`, `30.0`, `40` | `None` | |
+| New item | Normal | `1021`, `"Pencil"`, `40.0`, `60` | `None` | |
+| Search by code | Normal | `1001` | Item Code: 1001<br>Item Description: Pencil<br>Price of item: 1.0<br>Number of the item in stock: 100 | Item Code: 1001<br>Item Description: Pencil<br>Price of item: 1.0<br>Number of the item in stock: 100 |
+| Search by description | Normal | `"Pen"` | Item Code: 6056<br>Item Description: Pen<br>Price of item: 10.0<br>Number of the item in stock: 100<br><br>Item Code: 1020<br>Item Description: Pen<br>Price of item: 30.0<br>Number of the item in stock: 40 | Item Code: 6056<br>Item Description: Pen<br>Price of item: 10.0<br>Number of the item in stock: 100<br><br>Item Code: 1020<br>Item Description: Pen<br>Price of item: 30.0<br>Number of the item in stock: 40 |
+| Maximum threshold price | Normal | `30.0` | Item Code: 1001<br>Item Description: Pencil<br>Price of item: 1.0<br>Number of the item in stock: 100<br><br>Item Code: 6056<br>Item Description: Pen<br>Price of item: 10.0<br>Number of the item in stock: 100<br><br>Item Code: 2568<br>Item Description: Ruler<br>Price of item: 20.0<br>Number of the item in stock: 20 | Item Code: 1001<br>Item Description: Pencil<br>Price of item: 1.0<br>Number of the item in stock: 100<br><br>Item Code: 6056<br>Item Description: Pen<br>Price of item: 10.0<br>Number of the item in stock: 100<br><br>Item Code: 2568<br>Item Description: Ruler<br>Price of item: 20.0<br>Number of the item in stock: 20 |
+| Minimum stock level | Extreme | `0` | `None` | |
+| New item | Extreme | `9999`, `"Pen"`, `0.0`, `0` | `None` | |
+| New item | Extreme | `1002`, `"Pencil"`, `0.0`, `0` | `None` | |
+| Search by code | Extreme | `1001` | Item Code: 1001<br>Item Description: Pencil<br>Price of item: 1.0<br>Number of the item in stock: 100 | Item Code: 1001<br>Item Description: Pencil<br>Price of item: 1.0<br>Number of the item in stock: 100 |
+| Search by description | Extreme | `"Pen"` | Item Code: 6056<br>Item Description: Pen<br>Price of item: 10.0<br>Number of the item in stock: 100<br><br>Item Code: 9999<br>Item Description: Pen<br>Price of item: 0.0<br>Number of the item in stock: 0 | Item Code: 6056<br>Item Description: Pen<br>Price of item: 10.0<br>Number of the item in stock: 100<br><br>Item Code: 9999<br>Item Description: Pen<br>Price of item: 0.0<br>Number of the item in stock: 0 |
+| Maximum threshold price | Abnormal | `-2.0` | `None` | |
+| Minimum stock level | Abnormal | `"OOH"` | `ERROR` | `ERROR` |
+| New item | Abnormal | `10000`, `"Pen"`, `0.0`, `"0"` | `ERROR` | `ERROR` |
+| New item | Abnormal | `9999`, `"Pencil"`, `"HI"`, `0` | `ERROR` | `ERROR` |
+| Search by code | Abnormal | `100` | Program rejected this entry and asked to re-enter | Program would reject this entry and ask to re-enter |
+| Search by description | Abnormal | `32` | `ERROR` | `ERROR` |
+| Maximum threshold price | Abnormal | `"BYE"` | `ERROR` | `ERROR` |
+
+<div style="page-break-after: always"></div>
+
+## TASK 3.2
+
+> Discuss different testing methods such as black-box, white-box and stub testing.
+
+| Type of test | Description |
+| -- | -- |
+| Alpha | Final testing done by in-house developers |
+| Beta | Pre-release testing done by selected – or otherwise limited – users |
+| Acceptance | Final testing done by client to check whether requirements are met |
+| Backward compatibility | Check to ensure whether new software is compatible with previous elements |
+| White box | Done by people who know the program |
+| Black box | Done by people who do not know the program and may not know how to use it |
+| Component/unit | Test to ensure each module works independently |
+| Integration | Test to ensure modules work when they are integrated into one program |
+| Stub | Use of dummy modules in integration testing if some are incomplete |
+
+This program has undergone **stub testing** for each task, **integration testing** of final program, **alpha testing** (whitebox) and finally an **acceptence testing** against the question paper.
