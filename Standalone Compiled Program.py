@@ -48,7 +48,7 @@ def GetPrice():
 ## Subroutine to extract details of a given record string into an array
 def ExtractDetails(RecordString, Details):
     Position = 0
-    SearchString = RecordString + ':'
+    SearchString = RecordString.strip() + ':'
 
     if RecordString != "":
         for Counter in range(4):
@@ -79,7 +79,7 @@ WriteString = ""
 NewItemCode = int(input("\nEnter item code: "))
 WriteString = ':' + str(NewItemCode)
 
-NewItemDescription = str(input("Enter item description: "))
+NewItemDescription = input("Enter item description: ")
 WriteString += ':' + NewItemDescription
 
 NewPrice = float(input("Enter new price: "))
@@ -97,7 +97,7 @@ print("")
 WriteString = ""
 WriteString = ':' + str(GetItemCode())
 
-NewItemDescription = str(input("Enter item description: "))
+NewItemDescription = input("Enter item description: ")
 WriteString += ':' + NewItemDescription
 
 WriteString += ':' + str(GetPrice())
@@ -114,10 +114,7 @@ FileObject.close()
 FileObject = open(RecordsFile, "r")
 
 ## Read data from the file into an array. They are also split using the newline delimiter '\n'.
-FileData = (FileObject.read()).split('\n')
-
-## Remove last empty element
-FileData.pop()
+FileData = FileObject.readlines()
 
 ## Close the file
 FileObject.close()
@@ -147,7 +144,7 @@ else:
 
 
 ## TASK 2.4 (3)
-DesiredItemDescription = str(input("\nEnter the description of the item you want to search for: "))
+DesiredItemDescription = input("\nEnter the description of the item you want to search for: ")
 
 for record in FileData:
     DetailsOfRecord = ["" for i in range(4)]

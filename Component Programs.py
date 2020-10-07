@@ -32,7 +32,7 @@ WriteString = ""
 NewItemCode = int(input("\nEnter item code: "))
 WriteString = ':' + str(NewItemCode)
 
-NewItemDescription = str(input("Enter item description: "))
+NewItemDescription = input("Enter item description: ")
 WriteString += ':' + NewItemDescription
 
 NewPrice = float(input("Enter new price: "))
@@ -74,7 +74,7 @@ def GetPrice():
 
 def ExtractDetails(RecordString, Details):
     Position = 0
-    SearchString = RecordString + ':'
+    SearchString = RecordString.strip() + ':'
 
     if RecordString != "":
         for Counter in range(4):
@@ -87,12 +87,14 @@ def ExtractDetails(RecordString, Details):
                 CurrentCharacter = SearchString[Position : Position + 1]
 
 
+print ("")
+
 # ## TASK 2.4 (1)
 # Add a new stock item to the text file. Include validation of the different pieces of information as appropriate. For example item code data may be a fixed format.
 WriteString = ""
 WriteString = ':' + str(GetItemCode())
 
-NewItemDescription = str(input("\nEnter item description: "))
+NewItemDescription = input("Enter item description: ")
 WriteString += ':' + NewItemDescription
 
 WriteString += ':' + str(GetPrice())
@@ -113,7 +115,7 @@ print("\nEnter the code of the item you want to search for.")
 DesiredItemCode = GetItemCode()
 
 FileObject = open(RecordsFile, "r+")
-FileData = (FileObject.read()).split('\n')
+FileData = FileObject.readlines()
 FileObject.close()
 
 for record in FileData:
@@ -137,10 +139,10 @@ else:
 
 # ## TASK 2.4 (3)
 # Search for all stock items with a specific item description, with output as for task 2.
-DesiredItemDescription = str(input("\nEnter the description of the item you want to search for: "))
+DesiredItemDescription = input("\nEnter the description of the item you want to search for: ")
 
 FileObject = open(RecordsFile, "r+")
-FileData = (FileObject.read()).split('\n')
+FileData = FileObject.readlines()
 FileObject.close()
 
 for record in FileData:
@@ -157,12 +159,12 @@ for record in FileData:
 # ## TASK 2.4 (4)
 # Output a list of all stock items with a price greater than a given amount.
 print ("\nEnter the maximum threshold price.")
-ThresholdPrice = getPrice()
+ThresholdPrice = GetPrice()
 
 FileObject = open(RecordsFile, "r+")
-FileData = (FileObject.read()).split('\n')
+FileData = FileObject.readlines()
 FileObject.close()
-FileData.pop()
+30
 
 for record in FileData:
     DetailsOfRecord = ["" for i in range(4)]
