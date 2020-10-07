@@ -3,6 +3,7 @@ Last update: Anuj Verma, 03:16 PM 06/10/2020
 
 ## Files
 These are the files that constute the solution to the pre-release material for Computer Science component 9608/22 of the October/November 2020 examination series.
+
 | Filename | Type | Purpose |
 | -- | -- | -- |
 | 9608_w20_PM_22 | `.pdf` | The pre-release material file released by CAIE. |
